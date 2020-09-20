@@ -47,6 +47,6 @@ def scrape():
     scrape.hemisphere_image_urls = hemisphere_image_urls
 
     #return (scrape.nasa_title, scrape.nasa_paragraph, scrape.featured_image_url, scrape.mars_facts, scrape.hemisphere_image_urls)
-    return "OK"
+    return 'OK'
 
 scrape()

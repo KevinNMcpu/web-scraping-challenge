@@ -1,22 +1,38 @@
 from flask import Flask, jsonify
-from flask_pymongo import PyMongo
+import pymongo
 from scrape_mars import scrape
 import pandas as pd
 
 #set up Flask app and Mongo server
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://127.0.0.1:27017/"
-mongo = PyMongo(app)
+conn = 'mongodb://localhost:27017'
+client = pymongo.MongoClient(conn)
+db = client.mars_db
+
+collection = db.mars_db
+
+#root directory displaying data
+@app.route("/scrape")
+def home():
+    scrape()
+    post = {
+        "title": scrape.nasa_title,
+        "paragraph": scrape,
+        "url": scrape.featured_image_url,
+        "facts": scrape.mars_facts,
+        "hemisphere": scrape.hemisphere_image_urls}
+    collection.insert_one
+    return "Scraped Mars data, saved to MongoDB!"
 
 #scrape function
 @app.route("/scrape")
 def home():
     scrape()
-    print(scrape.nasa_title)
-    print(scrape.nasa_paragraph)
-    mongo.save_file("title", scrape.nasa_title)
-    mongo.save_file("paragraph", scrape.nasa_paragraph)
-    mongo.save_file("url", scrape.featured_image_url)
-    mongo.save_file("facts", scrape.mars_facts)
-    mongo.save_file("hemisphere", scrape.hemisphere_image_urls)
-    return "OK"
+    post = {
+        "title": scrape.nasa_title,
+        "paragraph": scrape,
+        "url": scrape.featured_image_url,
+        "facts": scrape.mars_facts,
+        "hemisphere": scrape.hemisphere_image_urls}
+    collection.insert_one
+    return "Scraped Mars data, saved to MongoDB!"
